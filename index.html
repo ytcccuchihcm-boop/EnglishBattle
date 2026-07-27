@@ -387,13 +387,30 @@ html,body{
     boom 0.6s infinite;
 
 }
+  #scoreBoard{
+    display:flex;
+    justify-content:space-between;
+    width:90%;
+    margin:auto;
+    font-size:22px;
+    font-weight:bold;
+}
+
+#score1{
+    color:#1976d2;
+}
+
+#score2{
+    color:#d32f2f;
+}
 </style>
 </head>
 
 <body>
 
-<div id="score">
-Điểm: 0
+<div id="scoreBoard">
+    <div id="score1">👤 Người 1 : 0</div>
+    <div id="score2">👤 Người 2 : 0</div>
 </div>
 
 <div id="beeCount">
