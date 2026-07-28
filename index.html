@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width,initial-scale=1.0,user-scalable=no">
+
+<title>Superhero VS Robot English</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+-webkit-tap-highlight-color:transparent;
+user-select:none;
+font-family:Arial,Helvetica,sans-serif;
+}
+
+html,body{
+
+width:100%;
+height:100%;
+overflow:hidden;
+
+background:#bfe9ff;
+
+touch-action:manipulation;
+
+}
+
+body{
+
+position:relative;
+
+}
+
+#game{
+
+position:absolute;
+
+left:0;
+top:0;
+
+width:100%;
+height:100%;
+
+overflow:hidden;
+
+}
+
+.playerPanel{
+
+position:absolute;
+
+left:0;
+
+width:100%;
+
+height:30%;
+
+display:flex;
+
+flex-direction:column;
+
+align-items:center;
+
+justify-content:center;
+
+}
+
+#topPanel{
+
+top:0;
+
+transform:rotate(180deg);
+
+}
+
+#bottomPanel{
+
+bottom:0;
+
+}
+
+.playerHeader{
+
+font-size:24px;
+
+font-weight:bold;
+
+margin-bottom:10px;
+
+color:#222;
+
+}
+
+.score{
+
+font-size:30px;
+
+color:#ff9800;
+
+margin-top:10px;
+
+}
+
+.answerArea{
+
+display:flex;
+
+flex-direction:row;
+
+justify-content:center;
+
+align-items:center;
+
+gap:12px;
+
+width:90%;
+
+}
+
+.answerButton{
+
+flex:1;
+
+max-width:180px;
+
+padding:14px 10px;
+
+font-size:22px;
+
+border-radius:14px;
+
+}
+
+.answerButton:active{
+
+transform:scale(.96);
+
+}
+
+#centerArea{
+
+position:absolute;
+
+left:0;
+
+top:30%;
+
+width:100%;
+
+height:40%;
+
+display:flex;
+
+flex-direction:column;
+
+align-items:center;
+
+justify-content:center;
+
+pointer-events:none;
+
+}
+
+#bee{
+
+width:70px;
+height:70px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+font-size:46px;
+
+}
+}
+
+#englishWord{
+
+margin-top:90px;
+
+font-size:40px;
+
+font-weight:bold;
+
+color:#0a3d62;
+
+height:55px;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+}
+
+#message{
+
+margin-top:10px;
+
+font-size:22px;
+
+color:#444;
+
+height:28px;
+
+}
+
+#loader{
+
+position:absolute;
+
+left:50%;
+
+top:50%;
+
+transform:translate(-50%,-50%);
+
+width:90%;
+
+max-width:600px;
+
+background:white;
+
+padding:20px;
+
+border-radius:18px;
+
+box-shadow:0 10px 40px rgba(0,0,0,.2);
+
+display:none;
+
+z-index:100;
+
+}
+
+#loader textarea{
+
+width:100%;
+
+height:250px;
+
+font-size:18px;
+
+padding:10px;
+
+resize:none;
+
+}
+
+#loaderButtons{
+
+display:flex;
+
+gap:10px;
+
+margin-top:15px;
+
+}
+
+.ctrl{
+
+flex:1;
+
+padding:14px;
+
+font-size:18px;
+
+border:none;
+
+border-radius:12px;
+
+background:#2196f3;
+
+color:white;
+
+}
+
+#toolbar{
+
+position:absolute;
+
+right:10px;
+
+top:10px;
+
+display:flex;
+
+gap:8px;
+
+z-index:50;
+
+}
+
+.toolButton{
+
+padding:10px 14px;
+
+border:none;
+
+border-radius:12px;
+
+background:#1976d2;
+
+color:white;
+
+font-size:16px;
+
+}
+
+.correct{
+
+background:#8bc34a!important;
+
+}
+
+.wrong{
+
+background:#ff5252!important;
+
+color:white!important;
+
+}
+
+.hidden{
+
+display:none!important;
+
+}
+
+
+#robotFirework,#heroFirework{position:absolute;width:180px;height:180px;pointer-events:none;}
+#robotFirework{top:-40px;left:50%;transform:translateX(-50%);}
+#heroFirework{bottom:-40px;left:50%;transform:translateX(-50%);}
+
+</style>
+</head>
+
+<body>
+
+<div id="game">
+
+<div id="toolbar">
+
+<button
+id="loadLesson"
+class="toolButton">
+Nạp bài
+</button>
+
+<button
+id="listenMode"
+class="toolButton">
+Nghe
+</button>
+
+</div>
+
+<div
+id="topPanel"
+class="playerPanel">
+
+<div class="playerHeader">
+
+🤖 ROBOT
+
+</div>
+
+<div
+id="topAnswers"
+class="answerArea">
+
+</div>
+
+<div
+id="player2Score"
+class="score">
+
+0
+
+</div>
+
+</div>
+
+<div id="centerArea">
+<div id="robotFirework"></div>
+<div id="heroFirework"></div>
+
+
+<div id="englishWord"></div>
+
+<div id="message">
+
+</div>
+
+</div>
+
+<div
+id="bottomPanel"
+class="playerPanel">
+
+<div
+id="bottomAnswers"
+class="answerArea">
+
+</div>
+
+<div
+id="player1Score"
+class="score">
+
+0
+
+</div>
+
+<div class="playerHeader">
+
+🦸 SIÊU NHÂN
+
+</div>
+
+</div>
+
+<div id="loader">
+
+<textarea
+id="lessonInput">
+
+apple=quả táo
+dog=con chó
+cat=con mèo
+
+</textarea>
+
+<div id="loaderButtons">
+
+<button
+id="saveLesson"
+class="ctrl">
+
+Lưu
+
+</button>
+
+<button
+id="closeLoader"
+class="ctrl">
+
+Đóng
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+//====================================================
+// BEE BATTLE ENGLISH
+// VERSION 1.0
+//====================================================
+
+//==========================
+// DOM
+//==========================
+
+const bee=document.getElementById("bee");
+
+const englishWord=
+document.getElementById("englishWord");
+
+const message=
+document.getElementById("message");
+
+const topAnswers=
+document.getElementById("topAnswers");
+
+const bottomAnswers=
+document.getElementById("bottomAnswers");
+
+const player1ScoreBox=
+document.getElementById("player1Score");
+
+const player2ScoreBox=
+document.getElementById("player2Score");
+
+const lessonInput=
+document.getElementById("lessonInput");
+
+const loader=
+document.getElementById("loader");
+
+const loadLessonBtn=
+document.getElementById("loadLesson");
+
+const saveLessonBtn=
+document.getElementById("saveLesson");
+
+const closeLoaderBtn=
+document.getElementById("closeLoader");
+
+const listenModeBtn=
+document.getElementById("listenMode");
+
+//==========================
+// GAME DATA
+//==========================
+
+let lesson=[];
+
+let currentWord=null;
+
+let player1Score=0;
+
+let player2Score=0;
+
+let roundRunning=false;
+
+let beeMoving=true;
+
+let listenMode=false;
+
+let beeTimer=null;
+
+let answerLocked=false;
+
+let speechFinished=false;
+
+let centerX;
+let centerY;
+
+const BEE_RADIUS=50;
+
+//==========================
+// SAVE / LOAD
+//==========================
+
+function saveLesson(){
+
+localStorage.setItem(
+"beeLesson",
+lessonInput.value
+);
+
+}
+
+function loadLesson(){
+
+const txt=
+localStorage.getItem(
+"beeLesson"
+);
+
+if(txt){
+
+lessonInput.value=txt;
+
+}
+
+}
+
+loadLesson();
+
+//==========================
+// PARSE LESSON
+//==========================
+
+function buildLesson(){
+
+lesson=[];
+
+const lines=
+lessonInput.value
+.split("\n")
+.map(v=>v.trim())
+.filter(v=>v!="");
+
+for(const line of lines){
+
+if(!line.includes("="))
+continue;
+
+const p=line.split("=");
+
+const en=p[0].trim();
+
+const vi=p[1].trim();
+
+lesson.push({
+
+en,
+
+vi,
+
+correct:0
+
+});
+
+}
+
+}
+
+//==========================
+// RANDOM
+//==========================
+
+function rand(min,max){
+
+return Math.floor(
+Math.random()*
+(max-min+1)
+)+min;
+
+}
+
+function randomItem(arr){
+
+return arr[
+rand(0,arr.length-1)
+];
+
+}
+
+//==========================
+// UI
+//==========================
+
+function updateScore(){
+
+player1ScoreBox.innerHTML=
+player1Score;
+
+player2ScoreBox.innerHTML=
+player2Score;
+
+}
+
+updateScore();
+
+//==========================
+// TOOLBAR
+//==========================
+
+loadLessonBtn.onclick=()=>{
+
+loader.style.display="block";
+
+};
+
+closeLoaderBtn.onclick=()=>{
+
+loader.style.display="none";
+
+};
+
+saveLessonBtn.onclick=()=>{
+
+saveLesson();
+
+buildLesson();
+
+loader.style.display="none";
+
+message.innerHTML=
+"Đã nạp "
++
+lesson.length+
+" từ";
+
+};
+
+listenModeBtn.onclick=()=>{
+
+listenMode=!listenMode;
+
+listenModeBtn.innerHTML=
+listenMode?
+"Nghe ✓":
+"Nghe";
+
+};
+
+//==========================
+// INIT
+//==========================
+
+buildLesson();
+
+if(lesson.length==0){
+
+lesson=[
+{
+en:"apple",
+vi:"quả táo",
+correct:0
+},
+{
+en:"dog",
+vi:"con chó",
+correct:0
+},
+{
+en:"cat",
+vi:"con mèo",
+correct:0
+}
+];
+
+}
+//==========================
+// BEE ENGINE
+//==========================
+
+function moveBee(){
+
+if(roundRunning) return;
+
+const angle=Math.random()*Math.PI*2;
+
+const r=rand(20,BEE_RADIUS);
+
+const x=centerX+Math.cos(angle)*r;
+
+const y=centerY+Math.sin(angle)*r;
+
+bee.style.left=(x-23)+"px";
+bee.style.top=(y-23)+"px";
+
+}
+
+function startBeeFlight(){
+
+clearInterval(beeTimer);
+
+moveBee();
+
+beeTimer=setInterval(()=>{
+
+moveBee();
+
+},900);
+
+}
+
+function updateBeeCenter(){
+
+const rect=
+document
+.getElementById("centerArea")
+.getBoundingClientRect();
+
+centerX=
+rect.left+
+rect.width/2;
+
+centerY=
+rect.top+
+rect.height/2;
+
+}
+
+updateBeeCenter();
+
+window.addEventListener(
+"resize",
+updateBeeCenter
+);
+
+startBeeFlight();
+
+//==========================
+// SPEECH
+//==========================
+
+function speak(text){
+
+speechFinished=false;
+
+window.speechSynthesis.cancel();
+
+const u=new SpeechSynthesisUtterance(text);
+
+u.lang="en-US";
+
+u.rate=0.9;
+
+u.pitch=1;
+
+u.onend=()=>{
+
+speechFinished=true;
+
+showQuestion();
+
+};
+
+window.speechSynthesis.speak(u);
+
+}
+
+//==========================
+// START ROUND
+//==========================
+
+bee.onclick=()=>{
+
+if(roundRunning) return;
+
+if(lesson.length<2){
+
+alert("Bài học phải có ít nhất 2 từ.");
+
+return;
+
+}
+
+roundRunning=true;
+
+answerLocked=false;
+
+englishWord.innerHTML="";
+
+message.innerHTML="Đang phát âm...";
+
+topAnswers.innerHTML="";
+
+bottomAnswers.innerHTML="";
+
+currentWord=randomItem(lesson);
+
+bee.style.transform="scale(1.45)";
+
+setTimeout(()=>{
+
+bee.style.transform="scale(1)";
+
+},250);
+
+speak(currentWord.en);
+
+};
+
+//==========================
+// CREATE ANSWERS
+//==========================
+
+function buildChoices(){
+
+const choices=[];
+
+choices.push(currentWord);
+
+while(choices.length<2){
+
+const w=randomItem(lesson);
+
+if(w.en!=currentWord.en){
+
+choices.push(w);
+
+}
+
+}
+
+choices.sort(()=>Math.random()-0.5);
+
+return choices;
+
+}
+
+function createButton(data,player){
+
+const bt=document.createElement("button");
+
+bt.className="answerButton";
+
+bt.innerHTML=data.vi;
+
+bt.onclick=()=>{
+
+answerClick(player,data,bt);
+
+};
+
+return bt;
+
+}
+
+function showQuestion(){
+
+if(listenMode){
+
+    englishWord.innerHTML="";
+    englishWord.style.visibility="hidden";
+
+}else{
+
+    englishWord.innerHTML=currentWord.en;
+    englishWord.style.visibility="visible";
+
+}
+
+message.innerHTML="";
+
+const answers=buildChoices();
+
+topAnswers.innerHTML="";
+
+bottomAnswers.innerHTML="";
+
+for(const item of answers){
+
+topAnswers.appendChild(
+
+createButton(item,2)
+
+);
+
+bottomAnswers.appendChild(
+
+createButton(item,1)
+
+);
+
+}
+
+}
+//==========================
+// ANSWER ENGINE
+//==========================
+
+function disableAnswers(){
+
+const all=document.querySelectorAll(".answerButton");
+
+all.forEach(bt=>{
+
+bt.disabled=true;
+
+});
+
+}
+
+function enableAnswers(){
+
+const all=document.querySelectorAll(".answerButton");
+
+all.forEach(bt=>{
+
+bt.disabled=false;
+
+});
+
+}
+
+function flashButton(button,className){
+
+button.classList.add(className);
+
+setTimeout(()=>{
+
+button.classList.remove(className);
+
+},500);
+
+}
+
+function removeFinishedWord(){
+
+lesson=lesson.filter(item=>{
+
+return item.correct<3;
+
+});
+
+}
+
+function nextRound(){
+
+roundRunning=false;
+
+answerLocked=false;
+
+englishWord.innerHTML="";
+
+message.innerHTML="";
+
+topAnswers.innerHTML="";
+
+bottomAnswers.innerHTML="";
+
+if(lesson.length==0){
+
+gameWin();
+
+return;
+
+}
+
+startBeeFlight();
+
+}
+
+function answerClick(player,data,button){
+
+if(answerLocked) return;
+
+answerLocked=true;
+
+disableAnswers();
+
+if(data.en===currentWord.en){
+
+flashButton(button,"correct");
+
+currentWord.correct++;
+
+if(player==1){
+
+player1Score++;
+
+}else{
+
+player2Score++;
+
+}
+
+updateScore();
+
+message.innerHTML=
+
+"Đúng! ("+
+
+currentWord.correct+
+
+"/3)";
+
+setTimeout(()=>{
+
+removeFinishedWord();
+
+nextRound();
+
+},900);
+
+}else{
+
+flashButton(button,"wrong");
+
+if(player==1){
+
+player2Score++;
+
+}else{
+
+player1Score++;
+
+}
+
+updateScore();
+
+message.innerHTML=
+
+"Sai! Điểm thuộc đối thủ";
+
+setTimeout(()=>{
+
+nextRound();
+
+},900);
+
+}
+
+}
+
+//==========================
+// GAME WIN
+//==========================
+
+function gameWin(){
+
+clearInterval(beeTimer);
+
+bee.style.display="none";
+
+englishWord.innerHTML="🎉";
+
+message.innerHTML="HOÀN THÀNH TẤT CẢ TỪ VỰNG";
+
+topAnswers.innerHTML="";
+
+bottomAnswers.innerHTML="";
+
+const win=document.createElement("div");
+
+win.style.position="absolute";
+
+win.style.left="50%";
+
+win.style.top="50%";
+
+win.style.transform="translate(-50%,-50%)";
+
+win.style.background="#ffffff";
+
+win.style.padding="30px";
+
+win.style.borderRadius="20px";
+
+win.style.boxShadow="0 10px 30px rgba(0,0,0,.25)";
+
+win.style.textAlign="center";
+
+win.innerHTML=`
+
+<h2>🏆 KẾT THÚC 🏆</h2>
+
+<br>
+
+<p>🦸 SIÊU NHÂN: <b>${player1Score}</b></p>
+
+<p>🤖 ROBOT: <b>${player2Score}</b></p>
+
+<br>
+
+<button id="restartGame"
+style="
+padding:14px 28px;
+font-size:20px;
+border:none;
+border-radius:12px;
+background:#4CAF50;
+color:white;
+cursor:pointer;
+">
+Chơi lại
+</button>
+
+`;
+
+document.body.appendChild(win);
+
+document
+.getElementById("restartGame")
+.onclick=()=>{
+
+location.reload();
+
+};
+
+}
+
+//==========================
+// AUTO SAVE
+//==========================
+
+window.addEventListener("beforeunload",()=>{
+
+saveLesson();
+
+});
+
+//==========================
+// START
+//==========================
+
+message.innerHTML="";
+
+updateScore();
+
+startBeeFlight();
+
+</script>
+
+</body>
+</html>
