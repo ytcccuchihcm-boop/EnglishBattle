@@ -110,9 +110,13 @@ margin-top:10px;
 
 display:flex;
 
-flex-direction:column;
+flex-direction:row;
 
-gap:14px;
+justify-content:center;
+
+align-items:center;
+
+gap:12px;
 
 width:90%;
 
@@ -120,21 +124,15 @@ width:90%;
 
 .answerButton{
 
-width:100%;
+flex:1;
 
-padding:16px;
+max-width:180px;
 
-border-radius:18px;
+padding:14px 10px;
 
-border:4px solid white;
+font-size:22px;
 
-background:#ffffff;
-
-font-size:24px;
-
-font-weight:bold;
-
-transition:.15s;
+border-radius:14px;
 
 }
 
@@ -172,16 +170,20 @@ pointer-events:none;
 
 position:absolute;
 
+width:120px;
+height:120px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
 font-size:70px;
 
 cursor:pointer;
 
-pointer-events:auto;
+z-index:999;
 
-transition:
-left .25s linear,
-top .25s linear,
-transform .2s;
+pointer-events:auto;
 
 }
 
@@ -535,11 +537,10 @@ let answerLocked=false;
 
 let speechFinished=false;
 
-let centerX=window.innerWidth/2;
+let centerX;
+let centerY;
 
-let centerY=window.innerHeight/2;
-
-const BEE_RADIUS=120;
+const BEE_RADIUS=50;
 
 //==========================
 // SAVE / LOAD
@@ -733,9 +734,8 @@ const x=centerX+Math.cos(angle)*r;
 
 const y=centerY+Math.sin(angle)*r;
 
-bee.style.left=(x-35)+"px";
-
-bee.style.top=(y-35)+"px";
+bee.style.left=(x-60)+"px";
+bee.style.top=(y-60)+"px";
 
 }
 
@@ -753,13 +753,29 @@ moveBee();
 
 }
 
-window.addEventListener("resize",()=>{
+function updateBeeCenter(){
 
-centerX=window.innerWidth/2;
+const rect=
+document
+.getElementById("centerArea")
+.getBoundingClientRect();
 
-centerY=window.innerHeight/2;
+centerX=
+rect.left+
+rect.width/2;
 
-});
+centerY=
+rect.top+
+rect.height/2;
+
+}
+
+updateBeeCenter();
+
+window.addEventListener(
+"resize",
+updateBeeCenter
+);
 
 startBeeFlight();
 
@@ -823,13 +839,13 @@ bottomAnswers.innerHTML="";
 
 currentWord=randomItem(lesson);
 
-bee.style.transform="scale(1.25)";
+bee.style.transform="scale(1.45)";
 
 setTimeout(()=>{
 
 bee.style.transform="scale(1)";
 
-},180);
+},250);
 
 speak(currentWord.en);
 
