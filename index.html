@@ -826,6 +826,7 @@ if(studyMode == "ordered"){
 
 
 // TẠO ĐÁP ÁN
+// ===== BATTLE MODE =====
 function createAnswerBoxes(correctAnswer){
 
   document
@@ -838,7 +839,7 @@ function createAnswerBoxes(correctAnswer){
   answers.push(correctAnswer);
 
 
-  while(answers.length < 2){
+  while(answers.length < 4){
 
     let random =
       words[
@@ -867,7 +868,7 @@ function createAnswerBoxes(correctAnswer){
   );
 
 
-  for(let i=0;i<2;i++){
+ for(let i=0;i<4;i++){
 
     let box =
       document.createElement("div");
@@ -903,17 +904,25 @@ if(foundWord){
 }
 
 
-    if(i==0){
+if(i==0){
+    box.style.left="4%";
+    box.style.bottom="35px";
+}
 
-      box.style.left =
-        "4%";
+if(i==1){
+    box.style.right="4%";
+    box.style.bottom="35px";
+}
 
-    }else{
+if(i==2){
+    box.style.left="4%";
+    box.style.top="35px";
+}
 
-      box.style.right =
-        "4%";
-
-    }
+if(i==3){
+    box.style.right="4%";
+    box.style.top="35px";
+}
 
 
     // NHẤP ĐÚP ĐỂ XEM TỪ
