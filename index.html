@@ -834,38 +834,37 @@ function createAnswerBoxes(correctAnswer){
     .forEach(box=>box.remove());
 
 
-  let answers = [];
+//======================
+// TẠO 2 CẶP ĐÁP ÁN
+//======================
 
-  answers.push(correctAnswer);
+// Lấy tất cả đáp án sai
+let wrongAnswers = words
+    .map(w => w.vietnamese)
+    .filter(v => v != correctAnswer);
 
+// Xáo ngẫu nhiên
+wrongAnswers.sort(() => Math.random() - 0.5);
 
-  while(answers.length < 4){
+// Mỗi người lấy 1 đáp án sai khác nhau
+let wrong1 = wrongAnswers[0];
+let wrong2 = wrongAnswers[1];
 
-    let random =
-      words[
-        Math.floor(
-          Math.random()*words.length
-        )
-      ];
+// Người 1 (phía dưới)
+let bottomAnswers = [
+    correctAnswer,
+    wrong1
+];
 
-    if(
-      !answers.includes(
-        random.vietnamese
-      )
-    ){
+// Người 2 (phía trên)
+let topAnswers = [
+    correctAnswer,
+    wrong2
+];
 
-      answers.push(
-        random.vietnamese
-      );
-
-    }
-
-  }
-
-
-  answers.sort(
-    ()=>Math.random()-0.5
-  );
+// Xáo riêng từng phía
+bottomAnswers.sort(() => Math.random() - 0.5);
+topAnswers.sort(() => Math.random() - 0.5);
 
 
  for(let i=0;i<4;i++){
@@ -876,11 +875,19 @@ function createAnswerBoxes(correctAnswer){
     box.className =
       "answerBox";
 
-    box.innerHTML =
-      answers[i];
+let answerText;
 
-box.dataset.answer =
-  answers[i];
+// Người 2
+if(i < 2){
+    answerText = topAnswers[i];
+}
+// Người 1
+else{
+    answerText = bottomAnswers[i - 2];
+}
+
+box.innerHTML = answerText;
+box.dataset.answer = answerText;
 
 
 // LƯU TỪ TIẾNG ANH
@@ -891,7 +898,7 @@ words.find(
 
   w =>
 
-  w.vietnamese === answers[i]
+w.vietnamese === answerText
 
 );
 
