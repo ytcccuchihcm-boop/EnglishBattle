@@ -708,19 +708,17 @@ correct:0
 
 function speak(text){
 
-window.speechSynthesis.cancel();
+    window.speechSynthesis.cancel();
 
-const u=new SpeechSynthesisUtterance(text);
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = "en-US";
+    u.rate = 0.9;
+    u.pitch = 1;
 
-u.lang="en-US";
-u.rate=0.9;
-u.pitch=1;
+    window.speechSynthesis.speak(u);
 
-u.onend=()=>{
-    showQuestion();
-};
-
-window.speechSynthesis.speak(u);
+    // Không chờ onend nữa
+    setTimeout(showQuestion, 1000);
 
 }
 
