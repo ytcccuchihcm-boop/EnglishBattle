@@ -1,1577 +1,1159 @@
-<!-- VERSION 2.0 BASE FILE -->
 <!DOCTYPE html>
-<html>
-
+<html lang="vi">
 <head>
-<!-- Version 2.0 Upgrade Ready -->
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width,initial-scale=1.0,user-scalable=no">
 
-
-<meta
-  name="viewport"
-  content="
-    width=device-width,
-    initial-scale=1,
-    minimum-scale=1,
-    maximum-scale=1,
-    user-scalable=no,
-    viewport-fit=cover
-  "
->
+<title>Bee Battle English</title>
 
 <style>
 
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+-webkit-tap-highlight-color:transparent;
+user-select:none;
+font-family:Arial,Helvetica,sans-serif;
+}
+
 html,body{
-  margin:0;
-  overflow:hidden;
-  background:#d6f3ff;
-  font-family:Arial;
-  touch-action:none;
-  overscroll-behavior:none;
-  user-select:none;
-  width:100%;
-  height:100%;
-  position:fixed;
-}
 
-.fly{
-  position:absolute;
-  font-size:55px;
-  cursor:pointer;
-  transition:0.5s;
-  z-index:10;
-}
+width:100%;
+height:100%;
+overflow:hidden;
 
-#score{
-  position:fixed;
-  top:30px;
-  left:10px;
-  background:white;
-  padding:10px 18px;
-  border-radius:20px;
-  font-size:22px;
-  z-index:999;
-  box-shadow:0 4px 10px rgba(0,0,0,0.2);
-}
+background:#bfe9ff;
 
-#beeCount{
-  display:none;
-}
-  position:fixed;
-  top:10px;
-  right:10px;
-  background:white;
-  padding:10px 18px;
-  border-radius:20px;
-  font-size:22px;
-  z-index:999;
-  box-shadow:0 4px 10px rgba(0,0,0,0.2);
-}
-
-#bestScore{
-
-  position:fixed;
-
-  top:120px;
-
-  left:10px;
-
-  background:white;
-
-  padding:10px 18px;
-
-  border-radius:20px;
-
-  font-size:18px;
-
-  z-index:999;
-
-  box-shadow:
-    0 4px 10px rgba(0,0,0,0.2);
-
-  max-width:230px;
+touch-action:manipulation;
 
 }
 
+body{
 
-/*  */
-
-#gameOverText{
-
-  position:fixed;
-
-  top:50%;
-  left:50%;
-
-  transform:
-    translate(-50%,-50%);
-
-  font-size:70px;
-
-  font-weight:bold;
-
-  color:red;
-
-  text-shadow:
-    4px 4px 10px black;
-
-  z-index:99999;
-
-  display:none;
-
-  animation:
-    boom 0.8s infinite;
+position:relative;
 
 }
 
+#game{
 
-/* WIN */
+position:absolute;
 
-#winText{
+left:0;
+top:0;
 
-  position:fixed;
+width:100%;
+height:100%;
 
-  top:40%;
-  left:50%;
-
-  transform:
-    translate(-50%,-50%);
-
-  font-size:75px;
-
-  font-weight:bold;
-
-  color:lime;
-
-  text-shadow:
-    4px 4px 10px black;
-
-  z-index:99999;
-
-  display:none;
-
-  animation:
-    boom 0.8s infinite;
+overflow:hidden;
 
 }
 
+.playerPanel{
 
-/* NÚT CHƠI LẠI */
+position:absolute;
 
-#restartButton{
+left:0;
 
-  position:fixed;
+width:100%;
 
-  top:58%;
-  left:50%;
+height:30%;
 
-  transform:
-    translateX(-50%);
+display:flex;
 
-  padding:18px 35px;
+flex-direction:column;
 
-  font-size:28px;
+align-items:center;
 
-  font-weight:bold;
-
-  border:none;
-
-  border-radius:25px;
-
-  background:#4caf50;
-
-  color:white;
-
-  z-index:99999;
-
-  display:none;
-
-  box-shadow:
-    0 6px 14px rgba(0,0,0,0.3);
+justify-content:center;
 
 }
 
+#topPanel{
 
-@keyframes boom{
+top:0;
 
-  0%{
-    transform:
-      translate(-50%,-50%)
-      scale(1);
-  }
-
-  50%{
-    transform:
-      translate(-50%,-50%)
-      scale(1.2);
-  }
-
-  100%{
-    transform:
-      translate(-50%,-50%)
-      scale(1);
-  }
+transform:rotate(180deg);
 
 }
 
+#bottomPanel{
 
-#openButton{
-
-  position:fixed;
-  top:80px;
-  right:10px;
-
-  width:60px;
-  height:60px;
-
-  border:none;
-  border-radius:50%;
-
-  font-size:30px;
-
-  background:white;
-
-  z-index:999;
-}
-
-#listenButton{
-
-  position:fixed;
-
-  top:150px;
-
-  right:10px;
-
-  width:60px;
-
-  height:60px;
-
-  border:none;
-
-  border-radius:50%;
-
-  background:white;
-
-  color:black;
-
-  font-size:20px;
-
-  font-weight:bold;
-
-  z-index:999;
-
-  box-shadow:
-    0 4px 10px rgba(0,0,0,0.2);
-}
-
-#studyModeButton{
-
-  position:fixed;
-
-  top:220px;
-
-  right:10px;
-
-  width:60px;
-
-  height:60px;
-
-  border:none;
-
-  border-radius:50%;
-
-  background:white;
-
-  color:black;
-
-  font-size:18px;
-
-  font-weight:bold;
-
-  z-index:999;
+bottom:0;
 
 }
-  #loaderPanel{
-  position:fixed;
-  top:150px;
-  right:10px;
-  width:220px;
-  background:white;
-  border-radius:20px;
-  padding:10px;
-  z-index:999;
-  box-shadow:0 4px 10px rgba(0,0,0,0.2);
-  display:none;
-}
 
-#vocabInput{
-  width:100%;
-  height:90px;
-  font-size:14px;
-  border-radius:10px;
-  padding:8px;
-  box-sizing:border-box;
-}
+.playerHeader{
 
-#loadButton{
-  margin-top:8px;
-  width:100%;
-  padding:10px;
-  border:none;
-  border-radius:12px;
-  background:#4caf50;
-  color:white;
-  font-size:16px;
-  font-weight:bold;
-}
+font-size:24px;
 
-.answerBox{
-  position:fixed;
-  bottom:35px;
-  width:42%;
-  height:85px;
-  background:white;
-  border:4px solid black;
-  border-radius:25px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  font-size:24px;
-  font-weight:bold;
-  box-shadow:0 4px 10px rgba(0,0,0,0.2);
-  transition:0.3s;
-}
+font-weight:bold;
 
-#word{
-  position:absolute;
-  background:#fff176;
-  min-width:120px;
-  text-align:center;
-  padding:12px 20px;
-  border:4px solid black;
-  border-radius:25px;
-  font-size:28px;
-  font-weight:bold;
-  z-index:20;
-  pointer-events:none;
-  box-shadow:0 6px 12px rgba(0,0,0,0.25);
-  transition:0.5s;
-  display:none;
-}
+margin-bottom:10px;
 
-#penaltyText{
-
-  position:fixed;
-
-  top:75%;
-
-  left:50%;
-
-  transform:
-    translate(-50%,-50%);
-
-  font-size:80px;
-
-  font-weight:bold;
-
-  color:#ff0000;
-
-  text-shadow:
-    4px 4px 12px black;
-
-  display:none;
-
-  z-index:99999;
-
-  animation:
-    boom 0.6s infinite;
+color:#222;
 
 }
+
+.score{
+
+font-size:30px;
+
+color:#ff9800;
+
+margin-top:10px;
+
+}
+
+.answerArea{
+
+display:flex;
+
+flex-direction:column;
+
+gap:14px;
+
+width:90%;
+
+}
+
+.answerButton{
+
+width:100%;
+
+padding:16px;
+
+border-radius:18px;
+
+border:4px solid white;
+
+background:#ffffff;
+
+font-size:24px;
+
+font-weight:bold;
+
+transition:.15s;
+
+}
+
+.answerButton:active{
+
+transform:scale(.96);
+
+}
+
+#centerArea{
+
+position:absolute;
+
+left:0;
+
+top:30%;
+
+width:100%;
+
+height:40%;
+
+display:flex;
+
+flex-direction:column;
+
+align-items:center;
+
+justify-content:center;
+
+pointer-events:none;
+
+}
+
+#bee{
+
+position:absolute;
+
+font-size:70px;
+
+cursor:pointer;
+
+pointer-events:auto;
+
+transition:
+left .25s linear,
+top .25s linear,
+transform .2s;
+
+}
+
+#englishWord{
+
+margin-top:90px;
+
+font-size:40px;
+
+font-weight:bold;
+
+color:#0a3d62;
+
+height:55px;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+}
+
+#message{
+
+margin-top:10px;
+
+font-size:22px;
+
+color:#444;
+
+height:28px;
+
+}
+
+#loader{
+
+position:absolute;
+
+left:50%;
+
+top:50%;
+
+transform:translate(-50%,-50%);
+
+width:90%;
+
+max-width:600px;
+
+background:white;
+
+padding:20px;
+
+border-radius:18px;
+
+box-shadow:0 10px 40px rgba(0,0,0,.2);
+
+display:none;
+
+z-index:100;
+
+}
+
+#loader textarea{
+
+width:100%;
+
+height:250px;
+
+font-size:18px;
+
+padding:10px;
+
+resize:none;
+
+}
+
+#loaderButtons{
+
+display:flex;
+
+gap:10px;
+
+margin-top:15px;
+
+}
+
+.ctrl{
+
+flex:1;
+
+padding:14px;
+
+font-size:18px;
+
+border:none;
+
+border-radius:12px;
+
+background:#2196f3;
+
+color:white;
+
+}
+
+#toolbar{
+
+position:absolute;
+
+right:10px;
+
+top:10px;
+
+display:flex;
+
+gap:8px;
+
+z-index:50;
+
+}
+
+.toolButton{
+
+padding:10px 14px;
+
+border:none;
+
+border-radius:12px;
+
+background:#1976d2;
+
+color:white;
+
+font-size:16px;
+
+}
+
+.correct{
+
+background:#8bc34a!important;
+
+}
+
+.wrong{
+
+background:#ff5252!important;
+
+color:white!important;
+
+}
+
+.hidden{
+
+display:none!important;
+
+}
+
 </style>
 </head>
 
 <body>
 
-<div id="score" style="font-size:18px;line-height:1.5">
-👦 Con ✔ <span id="p1c">0</span> ✘ <span id="p1w">0</span><br>
-👨 Ba ✔ <span id="p2c">0</span> ✘ <span id="p2w">0</span>
-</div>
+<div id="game">
 
-<div id="beeCount">
-🐝 3
-</div>
+<div id="toolbar">
 
-<div id="bestScore">
-🏆 Chưa có kỷ lục
-</div>
-
-<button id="openButton">
-📚
-</button>
-<button id="listenButton">
-🎧 OFF
-</button>
-  <button id="studyModeButton">
-🎲
+<button
+id="loadLesson"
+class="toolButton">
+Nạp bài
 </button>
 
-<div id="word"></div>
-
-<div id="gameOverText">
-GAME OVER
-</div>
-<div id="penaltyText">
-💥 -100 ĐIỂM
-</div>
-
-<div id="winText">
-WIN
-</div>
-
-<button id="restartButton">
-Chơi lại lần nữa!
+<button
+id="listenMode"
+class="toolButton">
+Nghe
 </button>
 
+</div>
 
-<div id="loaderPanel">
+<div
+id="topPanel"
+class="playerPanel">
 
-<textarea id="vocabInput">
+<div class="playerHeader">
+
+PLAYER 2
+
+</div>
+
+<div
+id="topAnswers"
+class="answerArea">
+
+</div>
+
+<div
+id="player2Score"
+class="score">
+
+0
+
+</div>
+
+</div>
+
+<div id="centerArea">
+
+<div id="bee">
+🐝
+</div>
+
+<div id="englishWord"></div>
+
+<div id="message">
+Chạm vào ong
+</div>
+
+</div>
+
+<div
+id="bottomPanel"
+class="playerPanel">
+
+<div
+id="bottomAnswers"
+class="answerArea">
+
+</div>
+
+<div
+id="player1Score"
+class="score">
+
+0
+
+</div>
+
+<div class="playerHeader">
+
+PLAYER 1
+
+</div>
+
+</div>
+
+<div id="loader">
+
+<textarea
+id="lessonInput">
+
 apple=quả táo
-banana=quả chuối
 dog=con chó
 cat=con mèo
-fish=cá
-sun=mặt trời
-car=xe hơi
-girl=bé gái
+
 </textarea>
 
-<button id="loadButton">
-Nạp bài học 😄
+<div id="loaderButtons">
+
+<button
+id="saveLesson"
+class="ctrl">
+
+Lưu
+
+</button>
+
+<button
+id="closeLoader"
+class="ctrl">
+
+Đóng
+
 </button>
 
 </div>
 
+</div>
+
+</div>
 
 <script>
+//====================================================
+// BEE BATTLE ENGLISH
+// VERSION 1.0
+//====================================================
 
+//==========================
+// DOM
+//==========================
 
-// KHÓA ZOOM
-document.addEventListener(
-  "gesturestart",
-  function(e){
-    e.preventDefault();
-  }
+const bee=document.getElementById("bee");
+
+const englishWord=
+document.getElementById("englishWord");
+
+const message=
+document.getElementById("message");
+
+const topAnswers=
+document.getElementById("topAnswers");
+
+const bottomAnswers=
+document.getElementById("bottomAnswers");
+
+const player1ScoreBox=
+document.getElementById("player1Score");
+
+const player2ScoreBox=
+document.getElementById("player2Score");
+
+const lessonInput=
+document.getElementById("lessonInput");
+
+const loader=
+document.getElementById("loader");
+
+const loadLessonBtn=
+document.getElementById("loadLesson");
+
+const saveLessonBtn=
+document.getElementById("saveLesson");
+
+const closeLoaderBtn=
+document.getElementById("closeLoader");
+
+const listenModeBtn=
+document.getElementById("listenMode");
+
+//==========================
+// GAME DATA
+//==========================
+
+let lesson=[];
+
+let currentWord=null;
+
+let player1Score=0;
+
+let player2Score=0;
+
+let roundRunning=false;
+
+let beeMoving=true;
+
+let listenMode=false;
+
+let beeTimer=null;
+
+let answerLocked=false;
+
+let speechFinished=false;
+
+let centerX=window.innerWidth/2;
+
+let centerY=window.innerHeight/2;
+
+const BEE_RADIUS=120;
+
+//==========================
+// SAVE / LOAD
+//==========================
+
+function saveLesson(){
+
+localStorage.setItem(
+"beeLesson",
+lessonInput.value
 );
 
-document.addEventListener(
-  "dblclick",
-  function(e){
-    e.preventDefault();
-  },
-  { passive:false }
+}
+
+function loadLesson(){
+
+const txt=
+localStorage.getItem(
+"beeLesson"
 );
 
+if(txt){
 
-// ĐIỂM
-let score = Number(localStorage.getItem("saveScore")) || 0;
-let p1Correct=0,p1Wrong=0,p2Correct=0,p2Wrong=0;
+lessonInput.value=txt;
 
-let currentAnswer = "";
+}
 
-let currentFly = null;
+}
 
-let noiseCount = Number(
-  localStorage.getItem("saveNoise")
-) || 0;
+loadLesson();
 
-let maxBee = 3;
+//==========================
+// PARSE LESSON
+//==========================
 
-let level = Number(localStorage.getItem("animalLevel") || 0);
+function buildLesson(){
 
-const levelAnimals = [
-"🐝","🐦","🕊️","🐇","🐕","🐎","🐄","🐘","🦕","🦖","🐉"
+lesson=[];
+
+const lines=
+lessonInput.value
+.split("\n")
+.map(v=>v.trim())
+.filter(v=>v!="");
+
+for(const line of lines){
+
+if(!line.includes("="))
+continue;
+
+const p=line.split("=");
+
+const en=p[0].trim();
+
+const vi=p[1].trim();
+
+lesson.push({
+
+en,
+
+vi,
+
+correct:0
+
+});
+
+}
+
+}
+
+//==========================
+// RANDOM
+//==========================
+
+function rand(min,max){
+
+return Math.floor(
+Math.random()*
+(max-min+1)
+)+min;
+
+}
+
+function randomItem(arr){
+
+return arr[
+rand(0,arr.length-1)
 ];
-let studyMode =
-
-localStorage.getItem(
-  "studyMode"
-) || "random";
-
-let listeningMode =
-
-localStorage.getItem(
-  "listeningMode"
-) == "true";
-
-localStorage.getItem(
-  "studyMode"
-) || "random";
-
-localStorage.getItem(
-  "listeningMode"
-) == "true";
-
-// KỶ LỤC
-let highScore =
-  localStorage.getItem("highScore") || 0;
-
-let highName =
-  localStorage.getItem("highName") || "";
-
-
-// TIẾN ĐỘ TỪ
-let wordProgress = {};
-
-
-const scoreBox =
-  document.getElementById("score");
-
-const beeBox =
-  document.getElementById("beeCount");
-
-const bestBox =
-  document.getElementById("bestScore");
-
-const wordBox=document.getElementById("word");
-const p1cBox=()=>document.getElementById("p1c");
-const p1wBox=()=>document.getElementById("p1w");
-const p2cBox=()=>document.getElementById("p2c");
-const p2wBox=()=>document.getElementById("p2w");
-
-
-// DANH SÁCH TỪ
-let words = [];
-
-
-// UPDATE
-function updateUI(){
-
-  scoreBox.innerHTML =
-    "Điểm: " + score;
-
-
-  let beeCount =
-    document.querySelectorAll(".bee").length;
-
-  beeBox.innerHTML =
-    levelAnimals[level % levelAnimals.length] + " " + beeCount;
-
-
-  p1cBox().textContent=p1Correct;
-p1wBox().textContent=p1Wrong;
-p2cBox().textContent=p2Correct;
-p2wBox().textContent=p2Wrong;
-
-if(highScore > 0){
-
-    bestBox.innerHTML =
-      "🏆 " +
-      highName +
-      " : " +
-      highScore;
-
-  }
 
 }
 
+//==========================
+// UI
+//==========================
 
-// GAME OVER
-function gameOver(){
+function updateScore(){
 
-  document
-    .getElementById("gameOverText")
-    .style.display =
-      "block";
-  // TRỪ 100 ĐIỂM
+player1ScoreBox.innerHTML=
+player1Score;
 
-score -= 100;
-
-if(score < 0){
-
-  score = 0;
+player2ScoreBox.innerHTML=
+player2Score;
 
 }
 
-updateUI();
-  localStorage.setItem(
-  "saveScore",
-  score
-);
+updateScore();
 
-document
-  .getElementById("penaltyText")
-  .style.display =
-    "block";
+//==========================
+// TOOLBAR
+//==========================
 
+loadLessonBtn.onclick=()=>{
 
-  navigator.vibrate(
-    [300,100,300]
-  );
-
-
-  if(score > highScore){
-
-    let player =
-      prompt(
-        "🏆 Kỷ lục mới! Nhập tên:"
-      );
-
-    if(player){
-
-      localStorage.setItem(
-        "highScore",
-        score
-      );
-
-      localStorage.setItem(
-        "highName",
-        player
-      );
-
-    }
-
-  }
-
-
-  document.body.style.pointerEvents =
-    "none";
-
-
-setTimeout(function(){
-
-  location.reload();
-
-},5000);
-
-}
-
-
-// WIN
-function winGame(){
-  localStorage.removeItem(
-  "saveWordProgress"
-);
-  localStorage.removeItem("saveScore");
-
-localStorage.removeItem("saveNoise");
-
-localStorage.removeItem("saveWordProgress");
-
-  level++;
-  localStorage.setItem("animalLevel", level);
-
-  let nextAnimal =
-    levelAnimals[level % levelAnimals.length];
-
-  document.getElementById("winText").innerHTML =
-    "WIN<br>Mở khóa " + nextAnimal;
-
-  document.getElementById("winText").style.display =
-    "block";
-
-  document.getElementById("restartButton").style.display =
-    "block";
-
-  navigator.vibrate([100,50,100,50,100]);
-
-  document.querySelectorAll(".fly").forEach(f=>{
-    f.style.pointerEvents = "none";
-  });
-
-}
-
-
-// NÚT CHƠI LẠI
-document
-  .getElementById("restartButton")
-  .onclick = function(){
-
-localStorage.removeItem(
-  "saveWordProgress"
-);
-
-location.reload();
-
-  }
-
-
-// LOAD TỪ
-function loadVocabulary(){
-
-  words = [];
-
-  wordProgress = {};
-
-  let text =
-    document.getElementById("vocabInput").value;
-
-  let lines =
-    text.split("\n");
-
-  for(let line of lines){
-
-    if(line.includes("=")){
-
-      let parts =
-        line.split("=");
-
-      let english =
-        parts[0].trim();
-
-      let vietnamese =
-        parts[1].trim();
-
-      words.push({
-
-        english:english,
-        vietnamese:vietnamese
-
-      });
-
-      wordProgress[english] = 0;
-
-    }
-// KHÔI PHỤC TIẾN ĐỘ
-
-let savedProgress =
-
-localStorage.getItem(
-  "saveWordProgress"
-);
-
-if(savedProgress){
-
-  wordProgress =
-
-    JSON.parse(
-      savedProgress
-    );
-
-}
-  }
-
-
-  // KHÔI PHỤC TIẾN ĐỘ ĐÃ LƯU
-
-  let savedProgress =
-
-    localStorage.getItem(
-      "saveWordProgress"
-    );
-
-  if(savedProgress){
-
-    wordProgress =
-
-      JSON.parse(
-        savedProgress
-      );
-
-  }
-
-}
-
-
-// KIỂM TRA WIN
-function checkWin(){
-
-  for(let key in wordProgress){
-
-    if(wordProgress[key] < 3){
-
-      return false;
-
-    }
-
-  }
-
-  return true;
-
-}
-
-
-// TỪ CHƯA HOÀN THÀNH
-function getAvailableWords(){
-
-  let availableWords =
-
-    words.filter(word =>
-
-      wordProgress[word.english] < 3
-
-    );
-
-if(studyMode == "ordered"){
-
-  return availableWords.slice(
-    0,
-    Math.min(20, availableWords.length)
-  );
-
-}
-
-  return availableWords;
-
-}
-
-
-// TẠO ĐÁP ÁN
-function createAnswerBoxes(correctAnswer){
-
-  document
-    .querySelectorAll(".answerBox")
-    .forEach(box=>box.remove());
-
-
-  let answers = [];
-
-  answers.push(correctAnswer);
-
-
-  while(answers.length < 2){
-
-    let random =
-      words[
-        Math.floor(
-          Math.random()*words.length
-        )
-      ];
-
-    if(
-      !answers.includes(
-        random.vietnamese
-      )
-    ){
-
-      answers.push(
-        random.vietnamese
-      );
-
-    }
-
-  }
-
-
-  answers.sort(
-    ()=>Math.random()-0.5
-  );
-
-
-  for(let i=0;i<2;i++){
-
-    let box =
-      document.createElement("div");
-
-    box.className =
-      "answerBox";
-
-    box.innerHTML =
-      answers[i];
-
-box.dataset.answer =
-  answers[i];
-
-
-// LƯU TỪ TIẾNG ANH
-
-let foundWord =
-
-words.find(
-
-  w =>
-
-  w.vietnamese === answers[i]
-
-);
-
-if(foundWord){
-
-  box.dataset.english =
-
-    foundWord.english;
-
-}
-
-
-    if(i==0){
-      box.dataset.player="1";
-      box.style.left ="4%";
-
-    }else{
-      box.dataset.player="2";
-      box.style.right ="4%";
-
-    }
-
-
-    // NHẤP ĐÚP ĐỂ XEM TỪ
-
-box.ondblclick = function(e){
-
-  e.stopPropagation();
-
-  wordBox.innerHTML =
-
-    box.dataset.english;
-
-  wordBox.style.display =
-
-    "block";
-
-  wordBox.style.left =
-
-    box.offsetLeft + "px";
-
-  wordBox.style.top =
-
-    (box.offsetTop - 80) + "px";
-
-  setTimeout(function(){
-
-    wordBox.style.display =
-
-      "none";
-
-  },2000);
+loader.style.display="block";
 
 };
-    box.onclick = function(){
 
-      if(currentFly == null){
-        return;
-      }
+closeLoaderBtn.onclick=()=>{
 
+loader.style.display="none";
 
-      // CHỮ BAY
+};
 
-      if(i==0){
+saveLessonBtn.onclick=()=>{
 
-        wordBox.style.left =
-          "10%";
+saveLesson();
 
-      }else{
+buildLesson();
 
-        wordBox.style.left =
-          "55%";
+loader.style.display="none";
 
-      }
+message.innerHTML=
+"Đã nạp "
++
+lesson.length+
+" từ";
 
-      wordBox.style.top =
-        (window.innerHeight - 220) + "px";
+};
 
+listenModeBtn.onclick=()=>{
 
-      // ĐÚNG
-      if(
-        box.dataset.answer ==
-        currentAnswer
-      ){
+listenMode=!listenMode;
 
-        navigator.vibrate([40,30,40]);
+listenModeBtn.innerHTML=
+listenMode?
+"Nghe ✓":
+"Nghe";
 
-        score +=5;
-if(box.dataset.player=="1") p1Correct++;
-else p2Correct++;
-        localStorage.setItem(
-  "saveScore",
-  score
-);
+};
 
-        updateUI();
+//==========================
+// INIT
+//==========================
 
+buildLesson();
 
-        // TĂNG ĐẾM
-        let englishWord =
-          currentFly.dataset.english;
+if(lesson.length==0){
 
-        wordProgress[
-          englishWord
-        ]++;
-        localStorage.setItem(
+lesson=[
+{
+en:"apple",
+vi:"quả táo",
+correct:0
+},
+{
+en:"dog",
+vi:"con chó",
+correct:0
+},
+{
+en:"cat",
+vi:"con mèo",
+correct:0
+}
+];
 
-  "saveWordProgress",
+}
+//==========================
+// BEE ENGINE
+//==========================
 
-  JSON.stringify(
-    wordProgress
-  )
+function moveBee(){
 
-);
-        localStorage.setItem(
-  "saveWordProgress",
-  JSON.stringify(wordProgress)
-);
+if(roundRunning) return;
 
+const angle=Math.random()*Math.PI*2;
 
-        // ĐỦ 3 LẦN -> XÓA ONG
-        if(
-          wordProgress[englishWord] >= 3
-        ){
+const r=rand(20,BEE_RADIUS);
 
-          currentFly.remove();
+const x=centerX+Math.cos(angle)*r;
 
-        }
+const y=centerY+Math.sin(angle)*r;
 
+bee.style.left=(x-35)+"px";
 
-        // SINH ONG MỚI
-        createFly();
-
-
-        // KIỂM TRA WIN
-        if(checkWin()){
-
-          winGame();
-
-          return;
-
-        }
-
-
-        box.style.background =
-          "#9cff9c";
-
-
-        setTimeout(function(){
-
-          wordBox.style.display =
-            "none";
-
-        },500);
-
-      }
-
-
-      // SAI
-      else{
-
-        navigator.vibrate([100,50,100]);
-
-        if(box.dataset.player=="1") p1Wrong++;
-else p2Wrong++;
-createNoise();
-updateUI();
-
-
-        box.style.background =
-          "#ff9c9c";
-
-
-        setTimeout(function(){
-
-          box.style.background =
-            "white";
-
-        },300);
-
-      }
-
-
-      currentFly = null;
-
-    }
-
-    document.body.appendChild(box);
-
-  }
+bee.style.top=(y-35)+"px";
 
 }
 
+function startBeeFlight(){
 
+clearInterval(beeTimer);
 
-// SINH VẬT GÂY NHIỄU
-function createNoise(){
+moveBee();
 
-  let noise =
-    document.createElement("div");
+beeTimer=setInterval(()=>{
 
-  noise.className =
-    "fly noise";
+moveBee();
 
+},900);
 
-  let icons =
-    ["🦋","🐞","🐌","🦗","🐜","🐛","🐌"];
+}
 
+window.addEventListener("resize",()=>{
 
-  noise.innerHTML =
-    icons[
-      Math.floor(
-        Math.random()*icons.length
-      )
-    ];
+centerX=window.innerWidth/2;
 
+centerY=window.innerHeight/2;
 
-  // BẤM NHẦM
-  noise.onclick = function(){
+});
 
-    navigator.vibrate(
-      [200,100,200]
-    );
+startBeeFlight();
 
-    gameOver();
+//==========================
+// SPEECH
+//==========================
 
-  }
+function speak(text){
 
+speechFinished=false;
 
-  document.body.appendChild(noise);
+window.speechSynthesis.cancel();
 
-  moveFly(noise);
+const u=new SpeechSynthesisUtterance(text);
 
+u.lang="en-US";
 
-  setInterval(function(){
+u.rate=0.9;
 
-    if(document.body.contains(noise)){
+u.pitch=1;
 
-      moveFly(noise);
+u.onend=()=>{
 
-    }
+speechFinished=true;
 
-  },1200);
+showQuestion();
 
+};
 
-  noiseCount++;
-  localStorage.setItem(
-  "saveNoise",
-  noiseCount
+window.speechSynthesis.speak(u);
+
+}
+
+//==========================
+// START ROUND
+//==========================
+
+bee.onclick=()=>{
+
+if(roundRunning) return;
+
+if(lesson.length<2){
+
+alert("Bài học phải có ít nhất 2 từ.");
+
+return;
+
+}
+
+roundRunning=true;
+
+answerLocked=false;
+
+englishWord.innerHTML="";
+
+message.innerHTML="Đang phát âm...";
+
+topAnswers.innerHTML="";
+
+bottomAnswers.innerHTML="";
+
+currentWord=randomItem(lesson);
+
+bee.style.transform="scale(1.25)";
+
+setTimeout(()=>{
+
+bee.style.transform="scale(1)";
+
+},180);
+
+speak(currentWord.en);
+
+};
+
+//==========================
+// CREATE ANSWERS
+//==========================
+
+function buildChoices(){
+
+const choices=[];
+
+choices.push(currentWord);
+
+while(choices.length<2){
+
+const w=randomItem(lesson);
+
+if(w.en!=currentWord.en){
+
+choices.push(w);
+
+}
+
+}
+
+choices.sort(()=>Math.random()-0.5);
+
+return choices;
+
+}
+
+function createButton(data,player){
+
+const bt=document.createElement("button");
+
+bt.className="answerButton";
+
+bt.innerHTML=data.vi;
+
+bt.onclick=()=>{
+
+answerClick(player,data,bt);
+
+};
+
+return bt;
+
+}
+
+function showQuestion(){
+
+englishWord.innerHTML=currentWord.en;
+
+message.innerHTML="Chọn đáp án";
+
+const answers=buildChoices();
+
+topAnswers.innerHTML="";
+
+bottomAnswers.innerHTML="";
+
+for(const item of answers){
+
+topAnswers.appendChild(
+
+createButton(item,2)
+
 );
 
+bottomAnswers.appendChild(
 
-  // 2 CON -> MẤT ONG
-  if(noiseCount % 2 == 0){
+createButton(item,1)
 
-    removeOneBee();
-
-  }
-
-
-  updateUI();
+);
 
 }
 
+}
+//==========================
+// ANSWER ENGINE
+//==========================
 
-// XÓA ONG
-function removeOneBee(){
+function disableAnswers(){
 
-  let bees =
-    document.querySelectorAll(".bee");
+const all=document.querySelectorAll(".answerButton");
 
+all.forEach(bt=>{
 
-  if(bees.length <= 1){
+bt.disabled=true;
 
-    bees[0]?.remove();
-
-    updateUI();
-
-    gameOver();
-
-    return;
-
-  }
-
-
-  bees[0].remove();
-
-  updateUI();
+});
 
 }
 
+function enableAnswers(){
 
-// TẠO ONG
-function createFly(){
+const all=document.querySelectorAll(".answerButton");
 
-  let beeCount =
-    document.querySelectorAll(".bee").length;
+all.forEach(bt=>{
 
+bt.disabled=false;
 
-  if(beeCount >= maxBee){
-    return;
-  }
+});
 
+}
 
-  // CHỈ LẤY TỪ CHƯA ĐỦ 3 LẦN
-  let availableWords =
-    getAvailableWords();
+function flashButton(button,className){
 
+button.classList.add(className);
 
-  if(availableWords.length <= 0){
+setTimeout(()=>{
 
-    winGame();
+button.classList.remove(className);
 
-    return;
+},500);
 
-  }
+}
 
+function removeFinishedWord(){
 
-  let fly =
-    document.createElement("div");
+lesson=lesson.filter(item=>{
 
-  fly.innerHTML = levelAnimals[level % levelAnimals.length];
+return item.correct<3;
 
-  fly.className =
-    "fly bee";
+});
 
+}
 
-  let randomWord =
-    availableWords[
-      Math.floor(
-        Math.random()*availableWords.length
-      )
-    ];
+function nextRound(){
 
+roundRunning=false;
 
-  fly.dataset.english =
-    randomWord.english;
+answerLocked=false;
 
-  fly.dataset.vietnamese =
-    randomWord.vietnamese;
+englishWord.innerHTML="";
 
+message.innerHTML="Chạm vào ong";
 
-  document.body.appendChild(fly);
+topAnswers.innerHTML="";
 
-  moveFly(fly);
+bottomAnswers.innerHTML="";
 
+if(lesson.length==0){
 
-  // BẤM ONG
-  fly.onclick = function(){
+gameWin();
 
-    navigator.vibrate(30);
+return;
 
+}
 
-    // ĐỌC TIẾNG ANH
+startBeeFlight();
 
-    let speak =
+}
 
-      new SpeechSynthesisUtterance(
+function answerClick(player,data,button){
 
-        fly.dataset.english
+if(answerLocked) return;
 
-      );
+answerLocked=true;
 
-    speak.lang = "en-US";
+disableAnswers();
 
-    speak.rate = 0.9;
+if(data.en===currentWord.en){
 
-    speechSynthesis.cancel();
+flashButton(button,"correct");
 
-    speechSynthesis.speak(speak);
+currentWord.correct++;
 
+if(player==1){
 
-    currentFly = fly;
-
-    currentAnswer =
-      fly.dataset.vietnamese;
-
-
-    wordBox.innerHTML =
-      fly.dataset.english;
-
-
-    let currentX =
-      parseInt(fly.style.left);
-
-    let currentY =
-      parseInt(fly.style.top);
-
-
-    // KHÔNG CHO CHỮ RA NGOÀI MÀN HÌNH
-
-    let popupX =
-      currentX + 70;
-
-
-    if(
-      popupX >
-      window.innerWidth - 220
-    ){
-
-      popupX =
-        window.innerWidth - 220;
-
-    }
-
-
-    if(popupX < 10){
-
-      popupX = 10;
-
-    }
-
-
-if(!listeningMode){
-
-  wordBox.style.display =
-    "block";
-
-  wordBox.style.left =
-    popupX + "px";
-
-  wordBox.style.top =
-    (currentY - 10) + "px";
+player1Score++;
 
 }else{
 
-  wordBox.style.display =
-    "none";
+player2Score++;
 
 }
 
+updateScore();
 
-    wordBox.style.transform =
-      "scale(1.2)";
+message.innerHTML=
 
+"Đúng! ("+
 
-    setTimeout(function(){
+currentWord.correct+
 
-      wordBox.style.transform =
-        "scale(1)";
+"/3)";
 
-    },150);
+setTimeout(()=>{
 
+removeFinishedWord();
 
-    createAnswerBoxes(
-      fly.dataset.vietnamese
-    );
+nextRound();
 
-  }
+},900);
 
+}else{
 
-  // ONG BAY
-  setInterval(function(){
+flashButton(button,"wrong");
 
-    if(document.body.contains(fly)){
+if(player==1){
 
-      moveFly(fly);
+player2Score++;
 
-    }
+}else{
 
-  },1500);
-
-}
-
-
-// DI CHUYỂN
-function moveFly(fly){
-
-  // KHÔNG CHO BAY RA MÉP
-
-  let safeLeft = 40;
-
-  let safeRight = 180;
-
-  let safeTop = 120;
-
-  let safeBottom = 320;
-
-
-  let x =
-
-    safeLeft +
-
-    Math.random() *
-
-    (
-      window.innerWidth
-      - safeRight
-      - safeLeft
-    );
-
-
-  let y =
-
-    safeTop +
-
-    Math.random() *
-
-    (
-      window.innerHeight
-      - safeBottom
-      - safeTop
-    );
-
-
-  fly.style.left =
-    x + "px";
-
-  fly.style.top =
-    y + "px";
+player1Score++;
 
 }
 
+updateScore();
 
-// PANEL
+message.innerHTML=
+
+"Sai! Điểm thuộc đối thủ";
+
+setTimeout(()=>{
+
+nextRound();
+
+},900);
+
+}
+
+}
+
+//==========================
+// GAME WIN
+//==========================
+
+function gameWin(){
+
+clearInterval(beeTimer);
+
+bee.style.display="none";
+
+englishWord.innerHTML="🎉";
+
+message.innerHTML="HOÀN THÀNH TẤT CẢ TỪ VỰNG";
+
+topAnswers.innerHTML="";
+
+bottomAnswers.innerHTML="";
+
+const win=document.createElement("div");
+
+win.style.position="absolute";
+
+win.style.left="50%";
+
+win.style.top="50%";
+
+win.style.transform="translate(-50%,-50%)";
+
+win.style.background="#ffffff";
+
+win.style.padding="30px";
+
+win.style.borderRadius="20px";
+
+win.style.boxShadow="0 10px 30px rgba(0,0,0,.25)";
+
+win.style.textAlign="center";
+
+win.innerHTML=`
+
+<h2>🏆 KẾT THÚC 🏆</h2>
+
+<br>
+
+<p>PLAYER 1: <b>${player1Score}</b></p>
+
+<p>PLAYER 2: <b>${player2Score}</b></p>
+
+<br>
+
+<button id="restartGame"
+style="
+padding:14px 28px;
+font-size:20px;
+border:none;
+border-radius:12px;
+background:#4CAF50;
+color:white;
+cursor:pointer;
+">
+Chơi lại
+</button>
+
+`;
+
+document.body.appendChild(win);
+
 document
-  .getElementById("openButton")
-  .onclick = function(){
+.getElementById("restartGame")
+.onclick=()=>{
 
-    let panel =
-      document.getElementById("loaderPanel");
-
-    if(panel.style.display == "none"){
-
-      panel.style.display =
-        "block";
-
-    }else{
-
-      panel.style.display =
-        "none";
-
-    }
-
-  }
-
-
-// LOAD
-document
-  .getElementById("loadButton")
-  .onclick = function(){
-
-    localStorage.setItem(
-
-      "savedVocabulary",
-
-      document.getElementById(
-        "vocabInput"
-      ).value
-
-    );
-
-    loadVocabulary();
-
-    // XÓA HẾT CON VẬT CŨ
-
-    document
-      .querySelectorAll(".fly")
-      .forEach(f=>f.remove());
-
-    // XÓA TỪ ĐANG HIỆN
-
-    wordBox.style.display =
-      "none";
-
-    // TẠO LẠI MÀN CHƠI
-
-    createFly();
-    createFly();
-    createFly();
+location.reload();
 
 };
 
-    loadVocabulary();
-
-
-
-// KHÔI PHỤC TỪ ĐÃ LƯU
-
-let savedWords =
-
-  localStorage.getItem(
-    "savedVocabulary"
-  );
-
-if(savedWords){
-
-  document.getElementById(
-    "vocabInput"
-  ).value = savedWords;
-
 }
 
-// LUYỆN NGHE
+//==========================
+// AUTO SAVE
+//==========================
 
-const listenButton =
+window.addEventListener("beforeunload",()=>{
 
-document.getElementById(
-  "listenButton"
-);
+saveLesson();
 
-function updateListenButton(){
+});
 
-  listenButton.innerHTML =
-
-    listeningMode
-
-    ?
-
-    "🎧"
-
-    :
-
-    "📖";
-
-}
-
-updateListenButton();
-
-listenButton.onclick = function(){
-
-
-  listeningMode =
-    !listeningMode;
-
-  localStorage.setItem(
-
-    "listeningMode",
-
-    listeningMode
-
-  );
-
-  updateListenButton();
-
-};
-const studyModeButton =
-
-document.getElementById(
-  "studyModeButton"
-);
-
-function updateStudyModeButton(){
-
-  if(studyMode == "random"){
-
-    studyModeButton.innerHTML =
-      "🎲";
-
-  }else{
-
-    studyModeButton.innerHTML =
-      "📚";
-
-  }
-
-}
-
-updateStudyModeButton();
-
-studyModeButton.onclick =
-function(){
-
-  if(studyMode == "random"){
-
-    studyMode = "ordered";
-
-  }else{
-
-    studyMode = "random";
-
-  }
-
-  localStorage.setItem(
-    "studyMode",
-    studyMode
-  );
-
-  updateStudyModeButton();
-
-};
-
+//==========================
 // START
-loadVocabulary();
+//==========================
 
-createFly();
-createFly();
-createFly();
+message.innerHTML="Chạm vào ong để bắt đầu";
 
-updateUI();
+updateScore();
+
+startBeeFlight();
 
 </script>
 
