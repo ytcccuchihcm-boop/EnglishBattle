@@ -387,30 +387,14 @@ html,body{
     boom 0.6s infinite;
 
 }
-  #scoreBoard{
-    display:flex;
-    justify-content:space-between;
-    width:90%;
-    margin:auto;
-    font-size:22px;
-    font-weight:bold;
-}
-
-#score1{
-    color:#1976d2;
-}
-
-#score2{
-    color:#d32f2f;
-}
 </style>
 </head>
 
 <body>
 
-<div id="scoreBoard">
-    <div id="score1">👤 Người 1 : 0</div>
-    <div id="score2">👤 Người 2 : 0</div>
+<div id="score" style="font-size:18px;line-height:1.5">
+👦 Con ✔ <span id="p1c">0</span> ✘ <span id="p1w">0</span><br>
+👨 Ba ✔ <span id="p2c">0</span> ✘ <span id="p2w">0</span>
 </div>
 
 <div id="beeCount">
@@ -490,9 +474,8 @@ document.addEventListener(
 
 
 // ĐIỂM
-let score = Number(
-  localStorage.getItem("saveScore")
-) || 0;
+let score = Number(localStorage.getItem("saveScore")) || 0;
+let p1Correct=0,p1Wrong=0,p2Correct=0,p2Wrong=0;
 
 let currentAnswer = "";
 
@@ -550,8 +533,11 @@ const beeBox =
 const bestBox =
   document.getElementById("bestScore");
 
-const wordBox =
-  document.getElementById("word");
+const wordBox=document.getElementById("word");
+const p1cBox=()=>document.getElementById("p1c");
+const p1wBox=()=>document.getElementById("p1w");
+const p2cBox=()=>document.getElementById("p2c");
+const p2wBox=()=>document.getElementById("p2w");
 
 
 // DANH SÁCH TỪ
@@ -572,7 +558,12 @@ function updateUI(){
     levelAnimals[level % levelAnimals.length] + " " + beeCount;
 
 
-  if(highScore > 0){
+  p1cBox().textContent=p1Correct;
+p1wBox().textContent=p1Wrong;
+p2cBox().textContent=p2Correct;
+p2wBox().textContent=p2Wrong;
+
+if(highScore > 0){
 
     bestBox.innerHTML =
       "🏆 " +
@@ -826,7 +817,6 @@ if(studyMode == "ordered"){
 
 
 // TẠO ĐÁP ÁN
-// ===== BATTLE MODE =====
 function createAnswerBoxes(correctAnswer){
 
   document
@@ -834,40 +824,41 @@ function createAnswerBoxes(correctAnswer){
     .forEach(box=>box.remove());
 
 
-//======================
-// TẠO 2 CẶP ĐÁP ÁN
-//======================
+  let answers = [];
 
-// Lấy tất cả đáp án sai
-let wrongAnswers = words
-    .map(w => w.vietnamese)
-    .filter(v => v != correctAnswer);
-
-// Xáo ngẫu nhiên
-wrongAnswers.sort(() => Math.random() - 0.5);
-
-// Mỗi người lấy 1 đáp án sai khác nhau
-let wrong1 = wrongAnswers[0];
-let wrong2 = wrongAnswers[1];
-
-// Người 1 (phía dưới)
-let bottomAnswers = [
-    correctAnswer,
-    wrong1
-];
-
-// Người 2 (phía trên)
-let topAnswers = [
-    correctAnswer,
-    wrong2
-];
-
-// Xáo riêng từng phía
-bottomAnswers.sort(() => Math.random() - 0.5);
-topAnswers.sort(() => Math.random() - 0.5);
+  answers.push(correctAnswer);
 
 
- for(let i=0;i<4;i++){
+  while(answers.length < 2){
+
+    let random =
+      words[
+        Math.floor(
+          Math.random()*words.length
+        )
+      ];
+
+    if(
+      !answers.includes(
+        random.vietnamese
+      )
+    ){
+
+      answers.push(
+        random.vietnamese
+      );
+
+    }
+
+  }
+
+
+  answers.sort(
+    ()=>Math.random()-0.5
+  );
+
+
+  for(let i=0;i<2;i++){
 
     let box =
       document.createElement("div");
@@ -875,19 +866,11 @@ topAnswers.sort(() => Math.random() - 0.5);
     box.className =
       "answerBox";
 
-let answerText;
+    box.innerHTML =
+      answers[i];
 
-// Người 2
-if(i < 2){
-    answerText = topAnswers[i];
-}
-// Người 1
-else{
-    answerText = bottomAnswers[i - 2];
-}
-
-box.innerHTML = answerText;
-box.dataset.answer = answerText;
+box.dataset.answer =
+  answers[i];
 
 
 // LƯU TỪ TIẾNG ANH
@@ -898,7 +881,7 @@ words.find(
 
   w =>
 
-w.vietnamese === answerText
+  w.vietnamese === answers[i]
 
 );
 
@@ -911,25 +894,15 @@ if(foundWord){
 }
 
 
-if(i==0){
-    box.style.left="4%";
-    box.style.bottom="35px";
-}
+    if(i==0){
+      box.dataset.player="1";
+      box.style.left ="4%";
 
-if(i==1){
-    box.style.right="4%";
-    box.style.bottom="35px";
-}
+    }else{
+      box.dataset.player="2";
+      box.style.right ="4%";
 
-if(i==2){
-    box.style.left="4%";
-    box.style.top="35px";
-}
-
-if(i==3){
-    box.style.right="4%";
-    box.style.top="35px";
-}
+    }
 
 
     // NHẤP ĐÚP ĐỂ XEM TỪ
@@ -996,7 +969,9 @@ box.ondblclick = function(e){
 
         navigator.vibrate([40,30,40]);
 
-        score += 5;
+        score +=5;
+if(box.dataset.player=="1") p1Correct++;
+else p2Correct++;
         localStorage.setItem(
   "saveScore",
   score
@@ -1070,7 +1045,10 @@ box.ondblclick = function(e){
 
         navigator.vibrate([100,50,100]);
 
-        createNoise();
+        if(box.dataset.player=="1") p1Wrong++;
+else p2Wrong++;
+createNoise();
+updateUI();
 
 
         box.style.background =
