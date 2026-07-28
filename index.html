@@ -708,24 +708,16 @@ correct:0
 
 function speak(text){
 
-speechFinished=false;
-
 window.speechSynthesis.cancel();
 
 const u=new SpeechSynthesisUtterance(text);
 
 u.lang="en-US";
-
 u.rate=0.9;
-
 u.pitch=1;
 
 u.onend=()=>{
-
-speechFinished=true;
-
-showQuestion();
-
+    showQuestion();
 };
 
 window.speechSynthesis.speak(u);
@@ -1007,7 +999,6 @@ nextRound();
 
 function gameWin(){
 
-clearInterval(beeTimer);
 
 
 
