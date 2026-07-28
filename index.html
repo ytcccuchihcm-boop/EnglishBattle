@@ -754,11 +754,11 @@ moveBee();
 
 function updateBeeCenter(){
 
-    const area = document.getElementById("centerArea");
+    const game = document.getElementById("game");
 
-    centerX = area.offsetLeft + area.offsetWidth / 2;
+    centerX = game.clientWidth / 2;
 
-    centerY = area.offsetTop + area.offsetHeight / 2;
+    centerY = game.clientHeight / 2;
 
 }
 
