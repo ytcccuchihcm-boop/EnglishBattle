@@ -754,18 +754,11 @@ moveBee();
 
 function updateBeeCenter(){
 
-const rect=
-document
-.getElementById("centerArea")
-.getBoundingClientRect();
+    const area = document.getElementById("centerArea");
 
-centerX=
-rect.left+
-rect.width/2;
+    centerX = area.offsetLeft + area.offsetWidth / 2;
 
-centerY=
-rect.top+
-rect.height/2;
+    centerY = area.offsetTop + area.offsetHeight / 2;
 
 }
 
