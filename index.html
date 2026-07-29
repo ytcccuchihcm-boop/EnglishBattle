@@ -183,19 +183,25 @@ font-size:46px;
 
 margin-top:90px;
 
-font-size:80px !important;
-
 font-weight:bold;
 
-color:#003399 !important;
+color:#003399;
 
-height:100px;
+height:160px;
 
 display:flex;
 
 align-items:center;
 
 justify-content:center;
+
+text-align:center;
+
+white-space:pre-line;
+
+line-height:1.1;
+
+padding:0 15px;
 
 }
 
@@ -812,8 +818,45 @@ if(listenMode){
 
 }else{
 
-    englishWord.innerHTML=currentWord.en;
+    let text=currentWord.en;
+
+    if(text.length>18){
+
+        const p=text.lastIndexOf(" ");
+
+        if(p>0){
+
+            text=text.substring(0,p)
+                 +"<br>"
+                 +text.substring(p+1);
+
+        }
+
+    }
+
+    englishWord.innerHTML=text;
+
     englishWord.style.visibility="visible";
+
+    const len=currentWord.en.length;
+
+    if(len<10){
+
+        englishWord.style.fontSize="80px";
+
+    }else if(len<18){
+
+        englishWord.style.fontSize="65px";
+
+    }else if(len<28){
+
+        englishWord.style.fontSize="50px";
+
+    }else{
+
+        englishWord.style.fontSize="38px";
+
+    }
 
 }
 
