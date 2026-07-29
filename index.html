@@ -287,35 +287,47 @@ color:white;
 
 }
 
-#toolbar{
+#toolBar{
 
 position:absolute;
 
-right:10px;
-
 top:10px;
+
+right:10px;
 
 display:flex;
 
-gap:8px;
+flex-direction:column;
 
-z-index:50;
+align-items:center;
+
+gap:8px;
 
 }
 
 .toolButton{
 
-padding:10px 14px;
+width:42px;
+
+height:42px;
+
+padding:0;
 
 border:none;
 
-border-radius:12px;
+border-radius:50%;
 
 background:#1976d2;
 
 color:white;
 
-font-size:16px;
+font-size:22px;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
 
 }
 
@@ -355,14 +367,16 @@ display:none!important;
 
 <button
 id="loadLesson"
-class="toolButton">
-Nạp
+class="toolButton"
+title="Nạp bài">
+📂
 </button>
 
 <button
 id="listenMode"
-class="toolButton">
-Nghe
+class="toolButton"
+title="Chế độ nghe">
+🔊
 </button>
 
 </div>
@@ -673,10 +687,8 @@ listenModeBtn.onclick=()=>{
 
 listenMode=!listenMode;
 
-listenModeBtn.innerHTML=
-listenMode?
-"Nghe ✓":
-"Nghe";
+listenModeBtn.innerHTML =
+listenMode ? "🔇" : "🔊";
 
 };
 
