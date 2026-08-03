@@ -352,6 +352,49 @@ color:white!important;
 display:none!important;
 
 }
+#reviewBox{
+
+position:fixed;
+
+left:50%;
+
+top:50%;
+
+transform:translate(-50%,-50%);
+
+width:92%;
+
+height:80%;
+
+background:white;
+
+border-radius:20px;
+
+padding:20px;
+
+display:flex;
+
+flex-direction:column;
+
+box-shadow:0 0 25px rgba(0,0,0,.45);
+
+z-index:9999;
+
+}
+
+#reviewText{
+
+flex:1;
+
+width:100%;
+
+font-size:20px;
+
+resize:none;
+
+margin-top:10px;
+
+}
 
 
 #robotFirework,#heroFirework{position:absolute;width:180px;height:180px;pointer-events:none;}
@@ -496,10 +539,11 @@ class="ctrl">
 id="reviewText"
 readonly
 style="
+flex:1;
 width:100%;
-height:300px;
 margin-top:10px;
-font-size:18px;
+font-size:20px;
+resize:none;
 "></textarea>
 
 <br><br>
@@ -792,6 +836,8 @@ reviewBox.classList.remove("hidden");
 closeReviewBtn.onclick=()=>{
 
 reviewBox.classList.add("hidden");
+
+answerLocked=false;
 
 };
 
