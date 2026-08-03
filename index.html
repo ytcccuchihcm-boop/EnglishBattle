@@ -380,6 +380,12 @@ class="toolButton"
 title="Hiện / Ẩn từ tiếng Anh">
 🔊
 </button>
+<button
+id="reviewWords"
+class="toolButton"
+title="Từ cần ôn">
+📚
+</button>
 
 </div>
 
@@ -482,6 +488,47 @@ class="ctrl">
 </div>
 
 </div>
+<div id="reviewBox" class="hidden">
+
+<h3>📚 10 TỪ CẦN ÔN</h3>
+
+<textarea
+id="reviewText"
+readonly
+style="
+width:100%;
+height:300px;
+margin-top:10px;
+font-size:18px;
+"></textarea>
+
+<br><br>
+
+<button
+id="closeReview"
+class="ctrl">
+
+Đóng
+
+</button>
+
+</div>
+
+<div id="loader">
+
+...
+
+</div>
+
+<!-- CHÈN reviewBox Ở ĐÂY -->
+
+<div id="reviewBox">
+...
+</div>
+
+</div>
+
+<script>
 
 <script>
 //====================================================
@@ -528,6 +575,17 @@ document.getElementById("closeLoader");
 
 const listenModeBtn=
 document.getElementById("listenMode");
+const reviewWordsBtn=
+document.getElementById("reviewWords");
+
+const reviewBox=
+document.getElementById("reviewBox");
+
+const reviewText=
+document.getElementById("reviewText");
+
+const closeReviewBtn=
+document.getElementById("closeReview");
 
 //==========================
 // GAME DATA
@@ -608,7 +666,11 @@ en,
 
 vi,
 
-correct:0
+correct:0,
+
+wrong:0,
+
+lastWrong:0
 
 });
 
@@ -695,6 +757,58 @@ listenModeBtn.innerHTML =
 listenMode ? "🙈" : "🔊";
 
 };
+reviewWordsBtn.onclick=()=>{
+
+let list=[...lesson];
+
+list=list.filter(item=>item.wrong>0);
+
+list.sort((a,b)=>{
+
+    if(b.lastWrong!=a.lastWrong){
+
+        return b.lastWrong-a.lastWrong;
+
+    }
+
+    return b.wrong-a.wrong;
+
+});
+
+list=list.slice(0,10);
+
+let text="";
+
+for(const item of list){
+
+    text+=
+    "❌"+
+    item.wrong+
+    "  "+
+    item.en+
+    "="+
+    item.vi+
+    "\n";
+
+}
+
+if(text==""){
+
+    text="🎉 Chưa có từ nào trả lời sai.";
+
+}
+
+reviewText.value=text;
+
+reviewBox.classList.remove("hidden");
+
+};
+
+closeReviewBtn.onclick=()=>{
+
+reviewBox.classList.add("hidden");
+
+};
 
 //==========================
 // INIT
@@ -708,17 +822,23 @@ lesson=[
 {
 en:"apple",
 vi:"quả táo",
-correct:0
+correct:0,
+wrong:0,
+lastWrong:0
 },
 {
 en:"dog",
 vi:"con chó",
-correct:0
+correct:0,
+wrong:0,
+lastWrong:0
 },
 {
 en:"cat",
 vi:"con mèo",
-correct:0
+correct:0,
+wrong:0,
+lastWrong:0
 }
 ];
 
@@ -1022,6 +1142,10 @@ nextRound();
 }else{
 
 flashButton(button,"wrong");
+
+currentWord.wrong++;
+
+currentWord.lastWrong=Date.now();
 
 if(player==1){
 
